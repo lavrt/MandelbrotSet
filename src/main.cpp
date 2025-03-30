@@ -13,7 +13,7 @@ int main() {
     sf::Sprite sprite(texture);
 
     sf::Font font;
-    font.loadFromFile("./resources/fonts/arial.ttf");
+    font.loadFromFile("./resources/arial.ttf");
     sf::Text fpsText;
     fpsText.setFont(font);
     fpsText.setCharacterSize(20);
