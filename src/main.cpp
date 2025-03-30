@@ -1,5 +1,3 @@
-// g++ main.cpp defaultRender.cpp -Wall -Wextra -lsfml-graphics -lsfml-window -lsfml-system -O3
-
 #include "common.h"
 #include "defaultRender.h"
 #include "vectorizedRender.h"
