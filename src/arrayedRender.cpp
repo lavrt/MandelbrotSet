@@ -4,6 +4,8 @@
 
 static void FillPixelArray(sf::Uint8* pixels, size_t x, size_t y, float* _iter_);
 
+static volatile int dummy = 0;
+
 // global ------------------------------------------------------------------------------------------
 
 void ArrayedRender(sf::Uint8* pixels, tParametrs position) {
@@ -52,7 +54,7 @@ void ArrayedRender(sf::Uint8* pixels, tParametrs position) {
                 float _condition2_[VECTOR_SIZE] = {};
                 float _condition_[VECTOR_SIZE] = {};
 
-                FOR_EACH_COORDINATE _condition1_[i] = _sX2_[i] + _sY2_[i] < _maxRadius_[i];
+                FOR_EACH_COORDINATE _condition1_[i] = _sX2_[i] + _sY2_[i] < _maxRadius_[i] * _maxRadius_[i];
                 FOR_EACH_COORDINATE _condition2_[i] = _iter_[i] < _maxIter_[i];
                 FOR_EACH_COORDINATE _condition_[i] = _condition1_[i] * _condition2_[i];
 
@@ -62,7 +64,9 @@ void ArrayedRender(sf::Uint8* pixels, tParametrs position) {
                 FOR_EACH_COORDINATE if (_condition_[i]) { nonZeroConditionArray = true; break; }
             } while (nonZeroConditionArray);
 
-            FillPixelArray(pixels, x, y, _iter_);
+            #if defined(GRAPHICS)
+                FillPixelArray(pixels, x, y, _iter_);
+            #endif
         }
         pX = INIT_X + position.offsetX; 
     }
@@ -73,7 +77,7 @@ void ArrayedRender(sf::Uint8* pixels, tParametrs position) {
 static void FillPixelArray(sf::Uint8* pixels, size_t x, size_t y, float* _iter_) {
     FOR_EACH_COORDINATE {
         uint8_t r = 0, g = 0, b = 0;
-        if ((int)_iter_[i] < MAX_ITER) {
+        if (_iter_[i] < MAX_ITER) {
             float t = _iter_[i] / MAX_ITER;
             r = 9 * t * 255;
             g = 5 * t * 255;

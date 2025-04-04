@@ -4,6 +4,8 @@
 
 static void FillPixelArray(sf::Uint8* pixels, size_t x, size_t y, __m256 _iter_);
 
+static volatile int dummy = 0;
+
 // global ------------------------------------------------------------------------------------------
 
 void VectorizedRender(sf::Uint8* pixels, tParametrs position) {
@@ -41,9 +43,12 @@ void VectorizedRender(sf::Uint8* pixels, tParametrs position) {
                 _condition_ = _mm256_and_ps(_condition1_, _condition2_);
             
                 _iter_ = _mm256_add_ps(_iter_, _mm256_and_ps(_condition_, _one_));
+
+                dummy = 1;
             }
-            
-            FillPixelArray(pixels, x, y, _iter_);
+            #if defined(GRAPHICS)
+                FillPixelArray(pixels, x, y, _iter_);
+            #endif
         }
         pX = INIT_X + position.offsetX; 
     }

@@ -1,8 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#def
-
 struct tParametrs {
     float zoom;
     float offsetX;

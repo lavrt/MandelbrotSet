@@ -4,6 +4,8 @@
 
 static void FillPixelArray(sf::Uint8* pixels, size_t x, size_t y, size_t iter);
 
+static volatile int dummy = 0;
+
 // global ------------------------------------------------------------------------------------------
 
 void DefaultRender(sf::Uint8* pixels, tParametrs position) {
@@ -30,9 +32,12 @@ void DefaultRender(sf::Uint8* pixels, tParametrs position) {
 
                 sX2 = sX * sX;
                 sY2 = sY * sY; 
+
+                dummy = 1;
             }
-            
-            FillPixelArray(pixels, x, y, iter);
+            #if defined(GRAPHICS)
+                FillPixelArray(pixels, x, y, iter);
+            #endif
         }
         pX = INIT_X + position.offsetX;
     }

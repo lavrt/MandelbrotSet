@@ -1,19 +1,45 @@
-#include "x86intrin.h"
-
 #include "common.h"
 #include "defaultRender.h"
 #include "vectorizedRender.h"
 #include "arrayedRender.h"
+#include "benchmark.h"
 
+// static ------------------------------------------------------------------------------------------
+
+static void UserMode(void (*RenderMandelbrot)(sf::Uint8*, tParametrs), sf::Uint8* pixels, tParametrs position);
 static void EventHandling(sf::RenderWindow* window, tParametrs* position);
 
+// global ------------------------------------------------------------------------------------------
+
 int main() {
+    void (*RenderMandelbrot)(sf::Uint8* pixels, tParametrs position);
+    RenderMandelbrot = DefaultRender;
+    #if defined(DEFAULT_RENDER)
+        RenderMandelbrot = DefaultRender;
+    #elif defined(ARRAYED_RENDER)
+        RenderMandelbrot = ArrayedRender;
+    #elif defined(VECTORIZED_RENDER)
+        RenderMandelbrot = VectorizedRender;
+    #endif
+    
     tParametrs position = {
         .zoom = 1.7, .offsetX = 0, .offsetY = 0
     };
-
-    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), WINDOW_NAME); 
     sf::Uint8* pixels = (sf::Uint8*)calloc(WIDTH * HEIGHT * 4, sizeof(sf::Uint8)); 
+
+    #if defined(TEST)
+        PerformanceTest(RenderMandelbrot, pixels, position);
+    #else
+        UserMode(RenderMandelbrot, pixels, position);
+    #endif
+
+    return 0;
+}
+
+// static ------------------------------------------------------------------------------------------
+
+static void UserMode(void (*RenderMandelbrot)(sf::Uint8*, tParametrs), sf::Uint8* pixels, tParametrs position) {
+    sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), WINDOW_NAME); 
 
     sf::Texture texture;
     texture.create(WIDTH, HEIGHT);
@@ -37,11 +63,7 @@ int main() {
         float fps = 1.0 / clock.restart().asSeconds();
         fpsText.setString("FPS: " + std::to_string((int)fps));
 
-        unsigned int tmp = 0;
-        unsigned long long start = __rdtscp(&tmp);
-        ArrayedRender(pixels, position);
-        unsigned long long end = __rdtscp(&tmp);
-        printf("%lu\n", end - start);
+        RenderMandelbrot(pixels, position);
 
         texture.update(pixels);
         window.clear();
@@ -50,8 +72,6 @@ int main() {
         window.display();
     }
     free(pixels);
-
-    return 0;
 }
 
 static void EventHandling(sf::RenderWindow* window, tParametrs* position) { 
