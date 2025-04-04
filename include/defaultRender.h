@@ -3,6 +3,6 @@
 
 #include "common.h"
 
-void DefaultRender(sf::Uint8* pixels);
+void DefaultRender(sf::Uint8* pixels, tParametrs position);
 
 #endif // DEFAULT_RENDER_H

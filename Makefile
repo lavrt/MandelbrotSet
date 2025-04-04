@@ -11,6 +11,7 @@ INC_DIR := include
 # ======================
 # Compilation flags
 # ======================
+# -march=native -flto -O2/-O3
 CXXFLAGS := -Wall -Wextra -I$(INC_DIR) -mavx -O3
 LDFLAGS := -lsfml-graphics -lsfml-window -lsfml-system
 
@@ -24,10 +25,10 @@ OBJECTS := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SOURCES))
 # Basic rules
 # ======================
 $(BIN_DIR)/$(TARGET): $(OBJECTS) | $(BIN_DIR)
-	$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
+	@$(CXX) $(CXXFLAGS) $^ $(LDFLAGS) -o $@
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	@$(CXX) $(CXXFLAGS) -c $< -o $@
 
 # ======================
 # Creating directories
