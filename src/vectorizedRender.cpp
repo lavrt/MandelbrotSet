@@ -1,5 +1,11 @@
 #include "vectorizedRender.h"
 
+// static ------------------------------------------------------------------------------------------
+
+static void FillPixelArray(sf::Uint8* pixels, size_t x, size_t y, __m256 _iter_);
+
+// global ------------------------------------------------------------------------------------------
+
 void VectorizedRender(sf::Uint8* pixels, tParametrs position) {
     float pX = INIT_X + position.offsetX;
     float pY = INIT_Y + position.offsetY;
@@ -36,25 +42,31 @@ void VectorizedRender(sf::Uint8* pixels, tParametrs position) {
             
                 _iter_ = _mm256_add_ps(_iter_, _mm256_and_ps(_condition_, _one_));
             }
-
-            float iters[8];
-            _mm256_storeu_ps(iters, _iter_);
-
-            for (size_t i = 0; i < 8; i++) {
-                uint8_t r = 0, g = 0, b = 0;
-                if ((int)iters[i] < MAX_ITER) {
-                    float t = iters[i] / MAX_ITER;
-                    r = 9 * t * 255;
-                    g = 5 * t * 255;
-                    b = 8 * t * 255;
-                }
-                size_t pixelIndex = (x + i + y * WIDTH) * 4;
-                pixels[pixelIndex]     = r;
-                pixels[pixelIndex + 1] = g;
-                pixels[pixelIndex + 2] = b;
-                pixels[pixelIndex + 3] = 255;
-            }
+            
+            FillPixelArray(pixels, x, y, _iter_);
         }
         pX = INIT_X + position.offsetX; 
+    }
+}
+
+// static ------------------------------------------------------------------------------------------
+
+static void FillPixelArray(sf::Uint8* pixels, size_t x, size_t y, __m256 _iter_) {
+    float iters[8];
+    _mm256_storeu_ps(iters, _iter_);
+
+    for (size_t i = 0; i < 8; i++) {
+        uint8_t r = 0, g = 0, b = 0;
+        if ((int)iters[i] < MAX_ITER) {
+            float t = iters[i] / MAX_ITER;
+            r = 9 * t * 255;
+            g = 5 * t * 255;
+            b = 8 * t * 255;
+        }
+        size_t pixelIndex = (x + i + y * WIDTH) * 4;
+        pixels[pixelIndex] = r;
+        pixels[pixelIndex + 1] = g;
+        pixels[pixelIndex + 2] = b;
+        pixels[pixelIndex + 3] = 255;
     }
 }

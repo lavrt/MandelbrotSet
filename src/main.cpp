@@ -1,3 +1,5 @@
+#include "x86intrin.h"
+
 #include "common.h"
 #include "defaultRender.h"
 #include "vectorizedRender.h"
@@ -6,7 +8,9 @@
 static void EventHandling(sf::RenderWindow* window, tParametrs* position);
 
 int main() {
-    tParametrs position = {1.7, 0, 0};
+    tParametrs position = {
+        .zoom = 1.7, .offsetX = 0, .offsetY = 0
+    };
 
     sf::RenderWindow window(sf::VideoMode(WIDTH, HEIGHT), WINDOW_NAME); 
     sf::Uint8* pixels = (sf::Uint8*)calloc(WIDTH * HEIGHT * 4, sizeof(sf::Uint8)); 
@@ -33,7 +37,11 @@ int main() {
         float fps = 1.0 / clock.restart().asSeconds();
         fpsText.setString("FPS: " + std::to_string((int)fps));
 
+        unsigned int tmp = 0;
+        unsigned long long start = __rdtscp(&tmp);
         ArrayedRender(pixels, position);
+        unsigned long long end = __rdtscp(&tmp);
+        printf("%lu\n", end - start);
 
         texture.update(pixels);
         window.clear();

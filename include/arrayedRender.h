@@ -1,7 +1,7 @@
 #ifndef ARRAYED_RENDER_H
 #define ARRAYED_RENDER_H
 
-#include <immintrin.h>
+#include <SFML/Graphics.hpp>
 #include "common.h"
 
 #define FOR_EACH_COORDINATE for (size_t i = 0; i < VECTOR_SIZE; i++)

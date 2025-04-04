@@ -1,7 +1,7 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-#include <SFML/Graphics.hpp>
+#def
 
 struct tParametrs {
     float zoom;
