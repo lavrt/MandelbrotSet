@@ -12,6 +12,7 @@ TEST ?= 0
 
 ifeq ($(TEST), 1)
 	CXXFLAGS += -DTEST
+	GRAPHICS_MODE = 0
 endif
 #--------------------------------------------
 
@@ -59,7 +60,7 @@ endif
 #--------------------------------------------
 
 # Graphics mode -----------------------------
-GRAPHICS_MODE ?= 1
+GRAPHICS_MODE ?= 
 
 ifeq ($(GRAPHICS_MODE), 0)
 	CXXFLAGS += -DNO_GRAPHICS
