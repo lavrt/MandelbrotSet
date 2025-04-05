@@ -23,7 +23,7 @@ int main() {
     #endif
     
     tParametrs position = {
-        .zoom = 1.7, .offsetX = 0, .offsetY = 0
+        .zoom = INIT_ZOOM, .offsetX = 0, .offsetY = 0
     };
     sf::Uint8* pixels = (sf::Uint8*)calloc(WIDTH * HEIGHT * 4, sizeof(sf::Uint8)); 
 
@@ -68,7 +68,7 @@ static void UserMode(void (*RenderMandelbrot)(sf::Uint8*, tParametrs), sf::Uint8
         texture.update(pixels);
         window.clear();
         window.draw(sprite);
-        window.draw(fpsText);
+        // window.draw(fpsText);
         window.display();
     }
     free(pixels);

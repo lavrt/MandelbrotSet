@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include "common.h"
 
-const size_t FRAME_COUNT = 10;
+const size_t FRAME_COUNT = 300;
 
 #define STRINGIFY(x_) #x_
 

@@ -24,7 +24,7 @@ void PerformanceTest(void (*RenderMandelbrot)(sf::Uint8*, tParametrs), sf::Uint8
 }
 
 static void TicksDump(unsigned long long* ticks) {
-    FILE* tickFile = fopen("tests.txt", "a+"); 
+    FILE* tickFile = fopen("./tests/tests.txt", "a+"); 
     assert(tickFile);
 
     //---------------------------------------------------
@@ -36,14 +36,6 @@ static void TicksDump(unsigned long long* ticks) {
         fprintf(tickFile, "%s ", "vectorized_render");
     #else
         fprintf(tickFile, "%s ", "default_render");
-    #endif
-    //---------------------------------------------------
-
-    //---------------------------------------------------
-    #if defined(NO_GRAPHICS)
-        fprintf(tickFile, "%s ", "graphics_off");
-    #else 
-        fprintf(tickFile, "%s ", "graphics_on");
     #endif
     //---------------------------------------------------
 
@@ -77,7 +69,7 @@ static void TicksDump(unsigned long long* ticks) {
         fprintf(tickFile, "%llu\n", ticks[i]);
     }
 
-    fprintf(tickFile, "\n\n");
+    fprintf(tickFile, "\n");
 
     fclose(tickFile);
 }

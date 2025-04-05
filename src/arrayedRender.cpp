@@ -62,6 +62,8 @@ void ArrayedRender(sf::Uint8* pixels, tParametrs position) {
 
                 nonZeroConditionArray = false;
                 FOR_EACH_COORDINATE if (_condition_[i]) { nonZeroConditionArray = true; break; }
+
+                dummy = 1;
             } while (nonZeroConditionArray);
 
             #if defined(GRAPHICS)

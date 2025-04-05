@@ -13,8 +13,9 @@ const char* const WINDOW_NAME = "Mandelbrot set";
 const char* const PATH_TO_FONT = "./resources/arial.ttf";
 
 const float ASPECT = (float)WIDTH / HEIGHT;
-const float INIT_X = -2.4;
-const float INIT_Y = -1.2;
+const float INIT_X = -3.0;
+const float INIT_Y = -1.45;
+const float INIT_ZOOM = 1.3;
 
 const float ZOOM_MULTIPLIER = 1.2;
 const float OFFSET_MULTIPLIER = 0.2;
