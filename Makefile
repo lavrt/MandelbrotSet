@@ -79,7 +79,6 @@ $(BIN_DIR)/$(TARGET): $(OBJECTS)
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(BUILD_DIR)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-# g++ -Iinclude -S -fverbose-asm -O2 ./src/defaultRender.cpp -o output.s
 
 .PHONY: clean run
 
