@@ -57,7 +57,7 @@ void VectorizedRender(sf::Uint8* pixels, tParametrs position) {
 // static ------------------------------------------------------------------------------------------
 
 static void FillPixelArray(sf::Uint8* pixels, size_t x, size_t y, __m256 _iter_) {
-    float iters[8];
+    alignas(__m256) float iters[8];
     _mm256_storeu_ps(iters, _iter_);
 
     for (size_t i = 0; i < 8; i++) {

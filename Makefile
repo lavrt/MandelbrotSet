@@ -87,4 +87,4 @@ clean:
 	rm -rf $(BIN_DIR) $(BUILD_DIR)
 
 run: $(BIN_DIR)/$(TARGET)
-	./$<
+	sudo nice -n -20 ./$<

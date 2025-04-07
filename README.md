@@ -33,27 +33,36 @@ make run
 
 ## Performance comparison
 ### Settings
-- image size: 1920*1080;
-- maximum iterations: 300;
-- CPU: 12th Gen Intel Core i5-12450H × 12.
+|                         |                                    |
+|-------------------------|------------------------------------|
+| Image size              | 1920*1080                          |
+| Maximum iterations      | 300                                |
+| CPU                     | 12th Gen Intel Core i5-12450H × 12 |
+| Average CPU frequency   | 2.0 GHz                            |
+| Average CPU temperature | 72°C                               |
+| The operating system    | Ubuntu 24.04.2 LTS                 |
+| Kernel Version          | Linux 6.11.0-21-generic            |
+| gcc compiler version    | 13.3.0                             |
+| clang compiler version  | 18.1.3                             |
+
 
 ### Results
 #### gcc compiler:
-| Algorithm     | Cycles (-O2)| Cycles (-O3)|
-| ---------     |-----        | -----       | 
-| naive         | (4.73 ± 0.39)e8, <u>(x1.0) | (4.74 ± 0.40)e8, <u>(x1.0) |
-| arrayed-based | (9.03 ± 0.20)e7, <u>(x5.2) | (3.89 ± 0.95)e8, <u>(x1.2) |
-| SIMD-based    | (8.15 ± 0.28)e7, <u>(x5.8) | (8.14 ± 0.19)e7, <u>(x5.8) |
+| Algorithm     | Cycles (-O0), e7  | Cycles (-O2), e7     | Cycles (-O3), e7     |
+| ---------     |-----              |-----                 | -----                | 
+| naive         | 57.10 ± 0.42      | 27.84 ± 0.71, (x1.0) | 27.82 ± 0.76, (x1.0) |
+| arrayed-based |                   | 5.37 ± 0.03, (x5.2)  | 25.99 ± 0.12, (x1.1) |
+| SIMD-based    |                   | 3.97 ± 0.03, (x7.0)  | 3.96 ± 0.03, (x7.0)  |
 
-![](./images/g1.png)
+![](./images/gcc.png)
 
 #### clang compiler:
-| Algorithm     | Cycles (-O2)| Cycles (-O3)|
-| ---------     |-----        | -----       |
-| naive         | (4.63 ± 0.27)e8, <u>(x1.0) | (4.64 ± 0.28)e8, <u>(x1.0) 
-| arrayed-based | (9.13 ± 0.05)e7, <u>(x5.1) | (9.13 ± 0.14)e7, <u>(x5.1) 
-| SIMD-based    | (7.47 ± 0.13)e7, <u>(x6.2) | (7.51 ± 0.10)e7, <u>(x6.2) 
+| Algorithm     | Cycles (-O0), e7  | Cycles (-O2), e7     | Cycles (-O3), e7     |
+| ---------     |-----              |-----                 | -----                | 
+| naive         | 58.49 ± 0.56      | 27.36 ± 0.07, (x1.0) | 27.51 ± 0.61, (x1.0) |
+| arrayed-based |                   | 6.38 ± 0.11, (x4.3)  | 5.51 ± 0.02, (x5.0)  |
+| SIMD-based    |                   | 4.49 ± 0.03, (x6.1)  | 4.49 ± 0.02, (x6.1)  |
 
 
-![](./images/g2.png)
+![](./images/clang.png)
 

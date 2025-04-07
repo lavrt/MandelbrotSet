@@ -6,12 +6,20 @@
 
 // static ------------------------------------------------------------------------------------------
 
+static int SetCpuCore(int coreIndex);
 static void UserMode(void (*RenderMandelbrot)(sf::Uint8*, tParametrs), sf::Uint8* pixels, tParametrs position);
 static void EventHandling(sf::RenderWindow* window, tParametrs* position);
 
 // global ------------------------------------------------------------------------------------------
 
 int main() {
+    SetCpuCore(7);
+
+    tParametrs position = {
+        .zoom = INIT_ZOOM, .offsetX = 0, .offsetY = 0
+    };
+    sf::Uint8* pixels = (sf::Uint8*)calloc(WIDTH * HEIGHT * 4, sizeof(sf::Uint8)); 
+
     void (*RenderMandelbrot)(sf::Uint8* pixels, tParametrs position);
     RenderMandelbrot = DefaultRender;
     #if defined(DEFAULT_RENDER)
@@ -21,11 +29,6 @@ int main() {
     #elif defined(VECTORIZED_RENDER)
         RenderMandelbrot = VectorizedRender;
     #endif
-    
-    tParametrs position = {
-        .zoom = INIT_ZOOM, .offsetX = 0, .offsetY = 0
-    };
-    sf::Uint8* pixels = (sf::Uint8*)calloc(WIDTH * HEIGHT * 4, sizeof(sf::Uint8)); 
 
     #if defined(TEST)
         PerformanceTest(RenderMandelbrot, pixels, position);
@@ -59,7 +62,6 @@ static void UserMode(void (*RenderMandelbrot)(sf::Uint8*, tParametrs), sf::Uint8
     while (window.isOpen()) {      
         EventHandling(&window, &position);
 
-        // TODO считай в тактах процессора (инстуркция ассемблерная)
         float fps = 1.0 / clock.restart().asSeconds();
         fpsText.setString("FPS: " + std::to_string((int)fps));
 
@@ -68,7 +70,7 @@ static void UserMode(void (*RenderMandelbrot)(sf::Uint8*, tParametrs), sf::Uint8
         texture.update(pixels);
         window.clear();
         window.draw(sprite);
-        // window.draw(fpsText);
+        window.draw(fpsText);
         window.display();
     }
     free(pixels);
@@ -85,24 +87,33 @@ static void EventHandling(sf::RenderWindow* window, tParametrs* position) {
             switch (event.key.code) {
             case sf::Keyboard::Add:
                 position->zoom *= ZOOM_MULTIPLIER;
-            break;
+                break;
             case sf::Keyboard::Subtract:
                 position->zoom /= ZOOM_MULTIPLIER;
-            break;
+                break;
             case sf::Keyboard::Numpad4:
                 position->offsetX -= OFFSET_MULTIPLIER / position->zoom;
-            break;
+                break;
             case sf::Keyboard::Numpad6:
                 position->offsetX += OFFSET_MULTIPLIER / position->zoom;
-            break;
+                break;
             case sf::Keyboard::Numpad8:
                 position->offsetY -= OFFSET_MULTIPLIER / position->zoom;
-            break;
+                break;
             case sf::Keyboard::Numpad2:
                 position->offsetY += OFFSET_MULTIPLIER / position->zoom;
-            break;
-            default: break;
+                break;
+            default:
+                break;
             }
         }
     }
+}
+
+static int SetCpuCore(int coreIndex) {
+    cpu_set_t mask;
+    CPU_ZERO(&mask);
+    CPU_SET(coreIndex, &mask);
+
+    return (sched_setaffinity(0, sizeof(mask), &mask) == -1) ? 0 : 1;
 }
