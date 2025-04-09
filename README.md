@@ -48,20 +48,20 @@ make run
 
 ### Results
 #### gcc compiler:
-| Algorithm     | Cycles (-O0), e7  | Cycles (-O2), e7     | Cycles (-O3), e7     |
-| ---------     |-----              |-----                 | -----                | 
-| naive         | 57.10 ± 0.42      | 27.84 ± 0.71, (x1.0) | 27.82 ± 0.76, (x1.0) |
-| arrayed-based |                   | 5.37 ± 0.03, (x5.2)  | 25.99 ± 0.12, (x1.1) |
-| SIMD-based    |                   | 3.97 ± 0.03, (x7.0)  | 3.96 ± 0.03, (x7.0)  |
+| Algorithm     |  Cycles (-O2), e7    | Cycles (-O3), e7     |
+| ---------     |--                    | -----                | 
+| naive         | 27.84 ± 0.71, (x1.0) | 27.82 ± 0.76, (x1.0) |
+| arrayed-based | 5.37 ± 0.03, (x5.2)  | 25.99 ± 0.12, (x1.1) |
+| SIMD-based    | 3.97 ± 0.03, (x7.0)  | 3.96 ± 0.03, (x7.0)  |
 
 ![](./images/gcc.png)
 
 #### clang compiler:
-| Algorithm     | Cycles (-O0), e7  | Cycles (-O2), e7     | Cycles (-O3), e7     |
-| ---------     |-----              |-----                 | -----                | 
-| naive         | 58.49 ± 0.56      | 27.36 ± 0.07, (x1.0) | 27.51 ± 0.61, (x1.0) |
-| arrayed-based |                   | 6.38 ± 0.11, (x4.3)  | 5.51 ± 0.02, (x5.0)  |
-| SIMD-based    |                   | 4.49 ± 0.03, (x6.1)  | 4.49 ± 0.02, (x6.1)  |
+| Algorithm     | Cycles (-O2), e7     | Cycles (-O3), e7     |
+| ---------     |----                  | -----                | 
+| naive         | 27.36 ± 0.07, (x1.0) | 27.51 ± 0.61, (x1.0) |
+| arrayed-based | 6.38 ± 0.11, (x4.3)  | 5.51 ± 0.02, (x5.0)  |
+| SIMD-based    | 4.49 ± 0.03, (x6.1)  | 4.49 ± 0.02, (x6.1)  |
 
 
 ![](./images/clang.png)
